@@ -35,6 +35,8 @@ namespace OdinSerializer
     /// </summary>
     public abstract class Serializer
     {
+        internal static bool ForceUnityObjectSerialization = false;
+
         private static readonly Dictionary<Type, Type> PrimitiveReaderWriterTypes = new Dictionary<Type, Type>()
         {
             { typeof(char), typeof(CharSerializer) },
