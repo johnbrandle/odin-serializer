@@ -28,7 +28,7 @@ namespace OdinSerializer
     {
         public bool TryGetFormatter(Type type, FormatterLocationStep step, ISerializationPolicy policy, out IFormatter formatter)
         {
-            if (!typeof(UnityEngine.Object).IsAssignableFrom(type))
+            if (!Serializer.ForceUnityObjectSerialization || !typeof(UnityEngine.Object).IsAssignableFrom(type))
             {
                 formatter = null;
                 return false;
