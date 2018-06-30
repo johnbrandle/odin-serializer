@@ -18,30 +18,30 @@
 
 using OdinSerializer;
 
-[assembly: RegisterFormatter(typeof(UnityEngineObjectFormatter<UnityEngine.Object>), 1000)]
+[assembly: RegisterFormatter(typeof(UnityEngineTextureFormatter<UnityEngine.Texture>), 1001)]
 
 namespace OdinSerializer
 {
     using System;
-    using System.Reflection;
-    using System.Runtime.Serialization;
+	using UnityEditor;
+	using UnityEngine;
 
-    /// <summary>
-    /// Formatter for handling unity objects. Based off of ReflectionFormatter
-    /// </summary>
-    /// <typeparam name="T">The type which can be serialized and deserialized by the formatter.</typeparam>
-    /// <seealso cref="BaseFormatter{T}" />
-    public class UnityEngineObjectFormatter<T> : BaseFormatter<T>
+	/// <summary>
+	/// Formatter for handling unity objects. Based off of ReflectionFormatter
+	/// </summary>
+	/// <typeparam name="T">The type which can be serialized and deserialized by the formatter.</typeparam>
+	/// <seealso cref="BaseFormatter{T}" />
+	public class UnityEngineTextureFormatter<T> : BaseFormatter<T> where T : Texture
     {
-        public UnityEngineObjectFormatter()
+        public UnityEngineTextureFormatter()
         {
         }
-
-        public UnityEngineObjectFormatter(ISerializationPolicy overridePolicy)
+        
+        public UnityEngineTextureFormatter(ISerializationPolicy overridePolicy)
         {
             this.OverridePolicy = overridePolicy;
         }
-
+        
         public ISerializationPolicy OverridePolicy { get; private set; }
 
         /// <summary>
@@ -61,37 +61,9 @@ namespace OdinSerializer
         /// <param name="writer">The writer to serialize with.</param>
         protected override void SerializeImplementation(ref T value, IDataWriter writer)
         {
-            var members = FormatterUtilities.GetSerializableMembers(typeof(T), SerializationPolicies.Everything);//this.OverridePolicy ?? writer.Context.Config.SerializationPolicy);
-
-            for (int i = 0; i < members.Length; i++)
-            {
-                var member = members[i];
-                Type type;
-                var memberValue = FormatterUtilities.GetMemberValue(member, value);
-
-                if (object.ReferenceEquals(memberValue, null))
-                {
-                    type = FormatterUtilities.GetContainedType(member);
-                }
-                else
-                {
-                    type = memberValue.GetType();
-                }
-
-                if (type.Equals(typeof(SerializationData))) continue;
-
-                
-                var serializer = Serializer.Get(type);
-
-                try
-                {
-                    serializer.WriteValueWeak(member.Name, memberValue, writer);
-                }
-                catch (Exception ex)
-                {
-                    writer.Context.Config.DebugContext.LogException(ex);
-                }
-            }
+            var members = FormatterUtilities.GetSerializableMembers(typeof(T), SerializationPolicies.Strict);
+			
+			writer.WriteString("Path", AssetDatabase.GetAssetPath(value));
         }
     }
 }
