@@ -80,7 +80,6 @@ namespace OdinSerializer
 
                 if (type.Equals(typeof(SerializationData))) continue;
 
-                
                 var serializer = Serializer.Get(type);
 
                 try

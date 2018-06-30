@@ -29,7 +29,7 @@ namespace OdinSerializer
     {
         public bool TryGetFormatter(Type type, FormatterLocationStep step, ISerializationPolicy policy, out IFormatter formatter)
         {
-            if (!typeof(Texture).IsAssignableFrom(type))
+            if (!Serializer.ForceUnityObjectSerialization || !typeof(Texture).IsAssignableFrom(type))
             {
                 formatter = null;
                 return false;

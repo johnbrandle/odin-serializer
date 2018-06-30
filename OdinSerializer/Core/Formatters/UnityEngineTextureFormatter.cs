@@ -62,7 +62,7 @@ namespace OdinSerializer
         protected override void SerializeImplementation(ref T value, IDataWriter writer)
         {
             var members = FormatterUtilities.GetSerializableMembers(typeof(T), SerializationPolicies.Strict);
-			
+
 			writer.WriteString("Path", AssetDatabase.GetAssetPath(value));
         }
     }
