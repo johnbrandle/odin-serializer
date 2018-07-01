@@ -27,7 +27,7 @@ namespace OdinSerializer
     /// <summary>
     /// Provides an array of utility wrapper methods for easy serialization and deserialization of objects of any type.
     /// </summary>
-    public static class SerializationUtility
+    public static partial class SerializationUtility
     {
         private static readonly object CACHE_LOCK = new object();
 
@@ -475,24 +475,6 @@ namespace OdinSerializer
                 SerializeValue(value, stream.Value.MemoryStream, format, out unityObjects, context);
                 return stream.Value.MemoryStream.ToArray();
             }
-        }
-
-        /// <summary>
-        /// Serializes the given value using the specified format and returns the result as a byte array. Forces Unity objects to be serialized, too.
-        /// </summary>
-        /// <typeparam name="T">The type of the value to serialize.</typeparam>
-        /// <param name="value">The value to serialize.</param>
-        /// <param name="format">The format to use.</param>
-        /// <param name="unityObjects">A list of the Unity objects which were referenced during serialization.</param>
-        /// <param name="context">The context to use.</param>
-        /// <returns>A byte array containing the serialized value.</returns>
-        public static byte[] SerializeValueUnity<T>(T value, DataFormat format, out List<UnityEngine.Object> unityObjects, SerializationContext context = null)
-        {
-            Serializer.ForceUnityObjectSerialization = true;
-            byte[] bytes = SerializeValue<T>(value, format, out unityObjects);
-            Serializer.ForceUnityObjectSerialization = false;
-
-            return bytes;
         }
 
         /// <summary>
