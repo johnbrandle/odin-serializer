@@ -514,15 +514,15 @@ namespace OdinSerializer
                 {
                     writer.WriteNull(name);
                 }
-                else if (!ForceUnityObjectSerialization && context.TryRegisterExternalReference(value, out index))
+                else if (!SerializeUnityEngineObjectReferences && context.TryRegisterExternalReference(value, out index))
                 {
                     writer.WriteExternalReference(name, index);
                 }
-                else if (!ForceUnityObjectSerialization && context.TryRegisterExternalReference(value, out guid))
+                else if (!SerializeUnityEngineObjectReferences && context.TryRegisterExternalReference(value, out guid))
                 {
                     writer.WriteExternalReference(name, guid);
                 }
-                else if (!ForceUnityObjectSerialization && context.TryRegisterExternalReference(value, out strId))
+                else if (!SerializeUnityEngineObjectReferences && context.TryRegisterExternalReference(value, out strId))
                 {
                     writer.WriteExternalReference(name, strId);
                 }
