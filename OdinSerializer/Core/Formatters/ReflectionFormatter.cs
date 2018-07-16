@@ -116,7 +116,11 @@ namespace OdinSerializer
                 }
 
                 var serializer = Serializer.Get(type);
-
+                
+                #if UNITY_EDITOR
+                if (Attribute.IsDefined(member, typeof(L10NAttribute))) SerializationUtility.LocalizedStringList.Add(memberValue.ToString());
+                #endif
+                
                 try
                 {
                     serializer.WriteValueWeak(member.Name, memberValue, writer);

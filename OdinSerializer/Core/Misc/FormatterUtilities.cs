@@ -59,8 +59,9 @@ namespace OdinSerializer
             typeof(Guid)
         };
 
+#pragma warning disable
         private static readonly FieldInfo UnityObjectRuntimeErrorStringField;
-
+#pragma warning restore
         private const string UnityObjectRuntimeErrorString =
 @"The variable nullValue of {0} has not been assigned.
 You probably need to assign the nullValue variable of the {0} script in the inspector.";

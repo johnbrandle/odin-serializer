@@ -36,6 +36,7 @@ namespace OdinSerializer
     public abstract class Serializer
     {
         internal static bool SerializeUnityEngineObjectReferences = false;
+        internal static bool DeserializeUnityEngineObjectReferences = false;
 
         private static readonly Dictionary<Type, Type> PrimitiveReaderWriterTypes = new Dictionary<Type, Type>()
         {
@@ -169,7 +170,15 @@ namespace OdinSerializer
             try
             {
                 Type resultType = null;
-
+				
+				#if CUSTOM_STRING_SERIALIZATION
+				if (type.Equals(typeof(String)))
+				{
+					resultType = typeof(StringDataTypeSerializer<>).MakeGenericType(typeof(String));
+				}
+				else
+                #endif
+                
                 if (type.IsEnum)
                 {
                     resultType = typeof(EnumSerializer<>).MakeGenericType(type);

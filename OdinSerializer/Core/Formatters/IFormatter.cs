@@ -23,7 +23,7 @@ namespace OdinSerializer
     /// <summary>
     /// Serializes and deserializes a given type.
     /// <para />
-    /// NOTE that if you are implementing a custom formatter and registering it using the <see cref="CustomFormatterAttribute"/>, it is not enough to implement <see cref="IFormatter"/> - you have to implement <see cref="IFormatter{T}"/>.
+    /// NOTE that if you are implementing a custom formatter and registering it using the <see cref="C ustomFormatterAttribute"/>, it is not enough to implement <see cref="IFormatter"/> - you have to implement <see cref="IFormatter{T}"/>.
     /// </summary>
     public interface IFormatter
     {
