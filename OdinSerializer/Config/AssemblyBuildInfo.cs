@@ -16,6 +16,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+//FILE HAS BEEN MODIFIED
+
 #if UNITY_EDITOR
 
 namespace OdinSerializer.Utilities.Editor
@@ -68,7 +70,7 @@ namespace OdinSerializer.Utilities.Editor
             }
         }
 
-        [MenuItem("Tools/Odin Serializer/Refresh Assembly Import Settings")]
+        //[MenuItem("Tools/Odin Serializer/Refresh Assembly Import Settings")]
         public static void RefreshAssemblyImportSettings()
         {
             Current.Apply();
