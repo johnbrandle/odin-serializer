@@ -16,6 +16,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+//FILE MODIFIED FROM ORIGINAL
+
 namespace OdinSerializer
 {
     using OdinSerializer.Utilities;
@@ -171,7 +173,7 @@ namespace OdinSerializer
             {
                 Type resultType = null;
 				
-				#if CUSTOM_STRING_SERIALIZATION
+				#if UNITY_EDITOR && CUSTOM_STRING_SERIALIZATION
 				if (type.Equals(typeof(String)))
 				{
 					resultType = typeof(StringDataTypeSerializer<>).MakeGenericType(typeof(String));

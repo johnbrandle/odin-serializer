@@ -16,6 +16,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+//FILE MODIFIED FROM ORIGINAL
+
 namespace OdinSerializer
 {
     using System;

@@ -16,18 +16,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+//FILE MODIFIED FROM ORIGINAL
+
 namespace OdinSerializer
 {
     using System;
     using System.Reflection;
     using System.Runtime.Serialization;
+	using XamExporter;
 
-    /// <summary>
-    /// Final fallback formatter for all types which have no other formatters. This formatter relies on reflection to work, and is thus comparatively slow and creates more garbage than a custom formatter.
-    /// </summary>
-    /// <typeparam name="T">The type which can be serialized and deserialized by the formatter.</typeparam>
-    /// <seealso cref="BaseFormatter{T}" />
-    public class ReflectionFormatter<T> : BaseFormatter<T>
+	/// <summary>
+	/// Final fallback formatter for all types which have no other formatters. This formatter relies on reflection to work, and is thus comparatively slow and creates more garbage than a custom formatter.
+	/// </summary>
+	/// <typeparam name="T">The type which can be serialized and deserialized by the formatter.</typeparam>
+	/// <seealso cref="BaseFormatter{T}" />
+	public class ReflectionFormatter<T> : BaseFormatter<T>
     {
         public ReflectionFormatter()
         {
@@ -117,9 +120,14 @@ namespace OdinSerializer
 
                 var serializer = Serializer.Get(type);
                 
-                #if UNITY_EDITOR
-                if (Attribute.IsDefined(member, typeof(L10NAttribute))) SerializationUtility.LocalizedStringList.Add(memberValue.ToString());
-                #endif
+#if UNITY_EDITOR
+                if (Attribute.IsDefined(member, typeof(XamExporter.L10NAttribute))) 
+                {
+                	var l10NAttribute = Attribute.GetCustomAttribute(member, typeof(L10NAttribute)) as L10NAttribute;
+                	var l10n = l10NAttribute.L10N;
+                	SerializationUtility.LocalizedStringList.Add(new XamExporter.Tuple<string, XamExporter.L10N>(memberValue.ToString(), l10n));
+                }
+#endif
                 
                 try
                 {
