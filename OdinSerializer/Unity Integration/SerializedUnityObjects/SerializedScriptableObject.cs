@@ -15,6 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
+using XamExporter;
 namespace OdinSerializer
 {
     using UnityEngine;
@@ -26,7 +27,7 @@ namespace OdinSerializer
     [Sirenix.OdinInspector.ShowOdinSerializedPropertiesInInspector]
 #endif
 
-    public abstract class SerializedScriptableObject : ScriptableObject, ISerializationCallbackReceiver
+    public abstract class SerializedScriptableObject : ScriptableObject, IXamExportable
     {
         [SerializeField, HideInInspector]
         private SerializationData serializationData;

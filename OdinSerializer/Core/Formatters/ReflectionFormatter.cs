@@ -121,7 +121,7 @@ namespace OdinSerializer
                 var serializer = Serializer.Get(type);
                 
 #if UNITY_EDITOR
-                if (Attribute.IsDefined(member, typeof(XamExporter.L10NAttribute))) 
+                if (Attribute.IsDefined(member, typeof(XamExporter.L10NAttribute)) && memberValue != null) 
                 {
                 	var l10NAttribute = Attribute.GetCustomAttribute(member, typeof(L10NAttribute)) as L10NAttribute;
                 	var l10n = l10NAttribute.L10N;

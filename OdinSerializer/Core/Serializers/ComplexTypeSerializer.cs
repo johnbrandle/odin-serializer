@@ -79,6 +79,9 @@ namespace OdinSerializer
 
                     if (reader.EnterNode(out serializedType))
                     {
+#if !UNITY_EDITOR && CUSTOM_STRING_SERIALIZATION
+                    	if (serializedType == null && expectedType.Equals(typeof(XamExporter.Data.String))) serializedType = expectedType;
+#endif                   
                         if (serializedType != expectedType)
                         {
                             if (serializedType != null)
