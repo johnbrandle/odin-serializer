@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterDictionaryKeyPathProvider(typeof(Vector2DictionaryKeyPathProvider))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System.Globalization;
     using UnityEngine;

@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Not yet documented.

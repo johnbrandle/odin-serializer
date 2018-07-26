@@ -18,7 +18,7 @@
 
 using System;
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Defines the configuration during serialization and deserialization. This class is thread-safe.

@@ -1,4 +1,4 @@
-﻿namespace OdinSerializer
+﻿namespace XamExporter
 {
     /// <summary>
     /// Defines default loggers for serialization and deserialization. This class and all of its loggers are thread safe.

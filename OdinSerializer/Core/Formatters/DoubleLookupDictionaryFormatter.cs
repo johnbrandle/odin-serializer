@@ -16,13 +16,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(DoubleLookupDictionaryFormatter<,,>))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
-    using OdinSerializer.Utilities;
+    using XamExporter.Utilities;
     using System;
     using System.Collections.Generic;
 

@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// An entry type which is part of a stream being read by a <see cref="IDataReader"/>.

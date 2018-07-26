@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Entry types in the binary format written by <see cref="BinaryDataWriter"/>.

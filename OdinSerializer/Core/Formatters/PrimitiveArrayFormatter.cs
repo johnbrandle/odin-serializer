@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Formatter for all primitive one-dimensional arrays.

@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Indicates that an Odin-serialized Unity object supports prefab serialization.

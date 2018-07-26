@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer.Utilities.Editor
+namespace XamExporter.Utilities.Editor
 {
     using UnityEngine;
     using UnityEditor;

@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace OdinSerializer
+namespace XamExporter
 {
     using System;
     using System.Reflection;

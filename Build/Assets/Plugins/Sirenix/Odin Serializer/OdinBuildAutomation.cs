@@ -1,13 +1,13 @@
 ﻿#if UNITY_EDITOR
-namespace OdinSerializer.Utilities.Editor
+namespace XamExporter.Utilities.Editor
 {
-    using OdinSerializer.Editor;
+    using XamExporter.Editor;
     using UnityEditor;
     using UnityEditor.Build;
     using System.IO;
     using System;
     using System.Collections.Generic;
-    using OdinSerializer.Utilities;
+    using XamExporter.Utilities;
 #if UNITY_2018_1_OR_NEWER
     using UnityEditor.Build.Reporting;
 #endif

@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// A formatter for empty types. It writes no data, and skips all data that is to be read, deserializing a "default" value.

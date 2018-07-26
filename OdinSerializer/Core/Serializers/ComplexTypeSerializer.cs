@@ -18,7 +18,7 @@
 
 //FILE MODIFIED FROM ORIGINAL
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System;
     using Utilities;

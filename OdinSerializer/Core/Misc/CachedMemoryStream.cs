@@ -16,9 +16,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
-    using OdinSerializer.Utilities;
+    using XamExporter.Utilities;
     using System.IO;
 
     internal sealed class CachedMemoryStream : ICacheNotificationReceiver

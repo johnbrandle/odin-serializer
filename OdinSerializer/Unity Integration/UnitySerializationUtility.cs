@@ -18,7 +18,7 @@
 
 //#define PREFAB_DEBUG
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System.Globalization;
     using System;

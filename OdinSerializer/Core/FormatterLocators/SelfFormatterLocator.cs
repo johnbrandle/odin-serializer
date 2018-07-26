@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatterLocator(typeof(SelfFormatterLocator), -60)]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System;
     using Utilities;

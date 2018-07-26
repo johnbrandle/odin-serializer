@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace OdinSerializer.Utilities
+namespace XamExporter.Utilities
 {
     /// <summary>
     /// Determents the type of operator.

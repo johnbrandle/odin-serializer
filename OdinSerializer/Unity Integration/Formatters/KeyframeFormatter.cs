@@ -16,13 +16,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(KeyframeFormatter))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
-    using OdinSerializer.Utilities;
+    using XamExporter.Utilities;
     using UnityEngine;
 
     /// <summary>

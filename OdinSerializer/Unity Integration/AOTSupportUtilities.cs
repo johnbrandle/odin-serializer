@@ -18,9 +18,9 @@
 
 #if UNITY_EDITOR
 
-namespace OdinSerializer.Editor
+namespace XamExporter.Editor
 {
-    using OdinSerializer.Utilities;
+    using XamExporter.Utilities;
     using System;
     using System.Collections.Generic;
     using System.IO;

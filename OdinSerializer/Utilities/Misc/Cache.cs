@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer.Utilities
+namespace XamExporter.Utilities
 {
     using System;
     using System.Collections.Generic;

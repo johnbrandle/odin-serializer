@@ -16,7 +16,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using XamExporter;
-namespace OdinSerializer
+namespace XamExporter
 {
     using UnityEngine;
 

@@ -20,7 +20,7 @@
 
 #if UNITY_EDITOR
 
-namespace OdinSerializer.Utilities.Editor
+namespace XamExporter.Utilities.Editor
 {
     using System;
     using System.Linq;

@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Contains global configuration options for the serialization system.

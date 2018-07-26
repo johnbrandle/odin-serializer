@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace OdinSerializer
+namespace XamExporter
 {
     /// <summary>
     /// Resolves external strings references to reference objects during serialization and deserialization.

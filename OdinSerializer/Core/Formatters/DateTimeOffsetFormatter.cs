@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(DateTimeOffsetFormatter))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System.Globalization;
     using System;

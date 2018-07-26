@@ -16,9 +16,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OdinSerializer
+namespace XamExporter
 {
-    using OdinSerializer.Utilities.Unsafe;
+    using XamExporter.Utilities.Unsafe;
     using System;
     using System.Collections.Generic;
     using System.IO;

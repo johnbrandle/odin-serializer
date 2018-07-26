@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(BoundsFormatter))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using UnityEngine;
 

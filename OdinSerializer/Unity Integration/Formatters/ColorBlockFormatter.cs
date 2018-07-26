@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(ColorBlockFormatter))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using UnityEngine;
     using UnityEngine.UI;
