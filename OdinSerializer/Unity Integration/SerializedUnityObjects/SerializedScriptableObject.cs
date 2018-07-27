@@ -27,7 +27,7 @@ namespace XamExporter
     [Sirenix.OdinInspector.ShowOdinSerializedPropertiesInInspector]
 #endif
 
-    public abstract class SerializedScriptableObject : ScriptableObject, IXamExportable
+    public abstract class SerializedScriptableObject : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField, HideInInspector]
         private SerializationData serializationData;
