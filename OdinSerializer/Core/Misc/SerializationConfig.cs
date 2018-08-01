@@ -53,7 +53,7 @@ namespace XamExporter
                     {
                         if (this.serializationPolicy == null)
                         {
-                            this.serializationPolicy = SerializationPolicies.Unity;
+                            this.serializationPolicy = SerializationPolicies.Everything;
                         }
                     }
                 }

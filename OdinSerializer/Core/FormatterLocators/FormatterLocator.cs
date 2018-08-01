@@ -215,7 +215,7 @@ namespace XamExporter
 
             if (policy == null)
             {
-                policy = SerializationPolicies.Strict;
+                policy = SerializationPolicies.Everything;
             }
 
             IFormatter result;

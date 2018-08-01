@@ -174,7 +174,7 @@ namespace XamExporter
                 Type resultType = null;
 				
 				#if UNITY_EDITOR && CUSTOM_STRING_SERIALIZATION
-				if (type.Equals(typeof(String)))
+				if (Serializer.SerializeUnityEngineObjectReferences && type.Equals(typeof(String)))
 				{
 					resultType = typeof(StringDataTypeSerializer<>).MakeGenericType(typeof(String));
 				}

@@ -154,7 +154,7 @@ namespace XamExporter
         {
             if (policy == null)
             {
-                policy = SerializationPolicies.Unity;
+                policy = SerializationPolicies.Everything;
             }
 
             if (member.DeclaringType == typeof(UnityEngine.Object)) return false;
@@ -680,7 +680,7 @@ namespace XamExporter
                             {
                                 resolver.Value.SetReferencedUnityObjects(data.ReferencedUnityObjects);
 
-                                newContext.Value.Config.SerializationPolicy = SerializationPolicies.Unity;
+                                newContext.Value.Config.SerializationPolicy = SerializationPolicies.Everything;
                                 newContext.Value.IndexReferenceResolver = resolver.Value;
 
                                 writer.Context = newContext;
@@ -929,7 +929,7 @@ namespace XamExporter
                 {
                     using (var con = Cache<SerializationContext>.Claim())
                     {
-                        con.Value.Config.SerializationPolicy = SerializationPolicies.Unity;
+                        con.Value.Config.SerializationPolicy = SerializationPolicies.Everything;
 
                         /* If the config instance is not loaded (it should usually be, but in rare cases
                          * it's not), we must not ask for it, as we are not allowed to load from resources
@@ -1158,7 +1158,7 @@ namespace XamExporter
                         cachedContext = Cache<DeserializationContext>.Claim();
                         context = cachedContext;
 
-                        context.Config.SerializationPolicy = SerializationPolicies.Unity;
+                        context.Config.SerializationPolicy = SerializationPolicies.Everything;
 
                         /* If the config instance is not loaded (it should usually be, but in rare cases
                          * it's not), we must not ask for it, as we are not allowed to load from resources
@@ -1384,7 +1384,7 @@ namespace XamExporter
                 {
                     using (var con = Cache<DeserializationContext>.Claim())
                     {
-                        con.Value.Config.SerializationPolicy = SerializationPolicies.Unity;
+                        con.Value.Config.SerializationPolicy = SerializationPolicies.Everything;
 
                         /* If the config instance is not loaded (it should usually be, but in rare cases
                          * it's not), we must not ask for it, as we are not allowed to load from resources

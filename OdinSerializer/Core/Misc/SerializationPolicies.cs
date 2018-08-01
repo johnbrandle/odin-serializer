@@ -96,8 +96,13 @@ namespace XamExporter
                                 {
                                     return true;
                                 }
+                                
+                                if ((Serializer.SerializeUnityEngineObjectReferences || Serializer.DeserializeUnityEngineObjectReferences) && member.IsDefined<XamNonSerializedAttribute>(true))
+                                {
+                                	return false;
+                                }
 
-                                return !member.IsDefined<NonSerializedAttribute>(true) && !member.IsDefined<XamNonSerializedAttribute>(true);
+                                return !member.IsDefined<NonSerializedAttribute>(true);
                             });
                         }
                     }
@@ -137,7 +142,7 @@ namespace XamExporter
 
                                 // If OdinSerializeAttribute is defined, NonSerializedAttribute is ignored.
                                 // This enables users to ignore Unity's infinite serialization depth warnings.
-                                if ((member.IsDefined<NonSerializedAttribute>(true) || member.IsDefined<XamNonSerializedAttribute>(true)) && !member.IsDefined<OdinSerializeAttribute>())
+                                if ((member.IsDefined<NonSerializedAttribute>(true) || ((Serializer.SerializeUnityEngineObjectReferences || Serializer.DeserializeUnityEngineObjectReferences) && member.IsDefined<XamNonSerializedAttribute>(true))) && !member.IsDefined<OdinSerializeAttribute>())
                                 {
                                     return false;
                                 }
@@ -182,7 +187,7 @@ namespace XamExporter
                                     return false;
                                 }
 
-                                if (member.IsDefined<NonSerializedAttribute>() || member.IsDefined<XamNonSerializedAttribute>())
+                                if (member.IsDefined<NonSerializedAttribute>() || ((Serializer.SerializeUnityEngineObjectReferences || Serializer.DeserializeUnityEngineObjectReferences) && member.IsDefined<XamNonSerializedAttribute>()))
                                 {
                                     return false;
                                 }

@@ -93,7 +93,7 @@ You probably need to assign the nullValue variable of the {0} script in the insp
 
             if (policy == null)
             {
-                policy = SerializationPolicies.Strict;
+                policy = SerializationPolicies.Everything;
             }
 
             lock (LOCK)
@@ -120,7 +120,7 @@ You probably need to assign the nullValue variable of the {0} script in the insp
 
             if (policy == null)
             {
-                policy = SerializationPolicies.Strict;
+                policy = SerializationPolicies.Everything;
             }
 
             lock (LOCK)
