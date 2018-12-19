@@ -18,6 +18,8 @@
 
 //#define PREFAB_DEBUG
 
+//FILE MODIFIED FROM ORIGINAL
+
 namespace XamExporter
 {
     using System.Globalization;
@@ -437,8 +439,9 @@ namespace XamExporter
 
                     if (prefabType == UnityEditor.PrefabType.PrefabInstance)
                     {
+                    	#pragma warning disable
                         prefab = UnityEditor.PrefabUtility.GetPrefabParent(unityObject);
-
+						#pragma warning restore
                         if (prefab.SafeIsUnityNull() && !object.ReferenceEquals(data.Prefab, null))
                         {
                             // Sometimes, GetPrefabParent does not return the prefab,

@@ -37,7 +37,7 @@ namespace XamExporter
     /// </summary>
     public abstract class Serializer
     {
-        internal static bool SerializeUnityEngineObjectReferences = false;
+        internal static bool SerializeUnityEngineObjectReferences = false; 
         internal static bool DeserializeUnityEngineObjectReferences = false;
 
         private static readonly Dictionary<Type, Type> PrimitiveReaderWriterTypes = new Dictionary<Type, Type>()
@@ -132,6 +132,8 @@ namespace XamExporter
 
             lock (LOCK)
             {
+				if (Serializer.SerializeUnityEngineObjectReferences) return Create(type);
+            	
                 if (ReaderWriterCache.TryGetValue(type, out result) == false)
                 {
                     result = Create(type);
