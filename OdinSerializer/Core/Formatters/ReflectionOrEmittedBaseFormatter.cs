@@ -20,7 +20,7 @@
 #define CAN_EMIT
 #endif
 
-namespace OdinSerializer
+namespace XamExporter
 {
     public abstract class ReflectionOrEmittedBaseFormatter<T> : ReflectionFormatter<T>
     {

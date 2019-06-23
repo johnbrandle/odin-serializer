@@ -16,11 +16,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using OdinSerializer;
+using XamExporter;
 
 [assembly: RegisterFormatter(typeof(MethodInfoFormatter<>))]
 
-namespace OdinSerializer
+namespace XamExporter
 {
     using System;
     using System.Linq;
