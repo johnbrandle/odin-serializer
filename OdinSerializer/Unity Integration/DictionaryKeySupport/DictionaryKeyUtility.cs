@@ -53,7 +53,7 @@ namespace XamExporter
 
         private static readonly HashSet<char> AllowedSpecialKeyStrChars = new HashSet<char>()
         {
-            ',', '(', ')', '\\', '|', '-'
+            ',', '(', ')', '\\', '|', '-', '+'
         };
 
         private static readonly Dictionary<Type, IDictionaryKeyPathProvider> TypeToKeyPathProviders = new Dictionary<Type, IDictionaryKeyPathProvider>();
@@ -68,7 +68,15 @@ namespace XamExporter
         {
             public int Compare(T x, T y)
             {
-                return ((UnityEngine.Object)(object)x).name.CompareTo(((UnityEngine.Object)(object)y).name);
+                var a = (UnityEngine.Object)(object)x;
+                var b = (UnityEngine.Object)(object)y;
+
+                if (a == null && b == null) return 0;
+
+                if (a == null) return 1;
+                if (b == null) return -1;
+
+                return a.name.CompareTo(b.name);
             }
         }
 
@@ -299,7 +307,9 @@ namespace XamExporter
                 if (!ObjectsToTempKeys.TryGetValue(key, out keyString))
                 {
                     keyString = (tempKeyCounter++).ToString();
-                    ObjectsToTempKeys[key] = "{temp:" + keyString + "}";
+                    var str = "{temp:" + keyString + "}";
+                    ObjectsToTempKeys[key] = str;
+                    TempKeysToObjects[str] = key;
                 }
 
                 return keyString;

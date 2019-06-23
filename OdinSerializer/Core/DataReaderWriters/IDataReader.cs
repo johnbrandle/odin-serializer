@@ -45,8 +45,9 @@ namespace XamExporter
         /// <value>
         /// The base stream of the reader.
         /// </value>
+        [Obsolete("Data readers and writers don't necessarily have streams any longer, so this API has been made obsolete. Using this property may result in NotSupportedExceptions being thrown.", false)]
         Stream Stream { get; set; }
-
+        
         /// <summary>
         /// Gets a value indicating whether the reader is in an array node.
         /// </summary>
@@ -88,6 +89,11 @@ namespace XamExporter
         DeserializationContext Context { get; set; }
 
         /// <summary>
+        /// Gets a dump of the data being read by the writer. The format of this dump varies, but should be useful for debugging purposes.
+        /// </summary>
+        string GetDataDump();
+
+        /// <summary>
         /// Tries to enter a node. This will succeed if the next entry is an <see cref="EntryType.StartOfNode"/>.
         /// <para />
         /// This call MUST (eventually) be followed by a corresponding call to <see cref="IDataReader.ExitNode(DeserializationContext)"/>
@@ -122,7 +128,7 @@ namespace XamExporter
         /// <summary>
         /// Exits the closest array. This method will keep skipping entries using <see cref="IDataReader.SkipEntry(DeserializationContext)"/> until an <see cref="EntryType.EndOfArray"/> is reached, or the end of the stream is reached.
         /// <para />
-        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)(out Type)"/>.
+        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)"/>.
         /// <para />
         /// This call will change the values of the <see cref="IDataReader.IsInArrayNode"/>, <see cref="IDataReader.CurrentNodeName"/>, <see cref="IDataReader.CurrentNodeId"/> and <see cref="IDataReader.CurrentNodeDepth"/> to the correct values for the node that was prior to the exited array node.
         /// </summary>

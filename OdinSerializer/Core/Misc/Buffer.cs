@@ -33,7 +33,7 @@ namespace XamExporter
 
         private int count;
         private T[] array;
-        private bool isFree;
+        private volatile bool isFree;
 
         private Buffer(int count)
         {
@@ -164,6 +164,7 @@ namespace XamExporter
                             {
                                 Buffer<T>.FreeBuffers[i] = buffer;
                                 added = true;
+                                break;
                             }
                         }
 

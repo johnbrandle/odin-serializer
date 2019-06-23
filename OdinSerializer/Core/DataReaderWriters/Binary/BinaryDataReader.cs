@@ -451,7 +451,7 @@ namespace XamExporter
         /// <summary>
         /// Exits the closest array. This method will keep skipping entries using <see cref="IDataReader.SkipEntry()" /> until an <see cref="EntryType.EndOfArray" /> is reached, or the end of the stream is reached.
         /// <para />
-        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)(out Type)" />.
+        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)" />.
         /// <para />
         /// This call will change the values of the <see cref="IDataReader.IsInArrayNode" />, <see cref="IDataReader.CurrentNodeName" />, <see cref="IDataReader.CurrentNodeId" /> and <see cref="IDataReader.CurrentNodeDepth" /> to the correct values for the node that was prior to the exited array node.
         /// </summary>
@@ -1519,6 +1519,25 @@ namespace XamExporter
             this.types.Clear();
         }
 
+        public override string GetDataDump()
+        {
+            if (!this.Stream.CanSeek)
+            {
+                return "Binary data stream cannot seek; cannot dump data.";
+            }
+
+            var oldPosition = this.Stream.Position;
+
+            var bytes = new byte[this.Stream.Length];
+
+            this.Stream.Position = 0;
+            this.Stream.Read(bytes, 0, bytes.Length);
+
+            this.Stream.Position = oldPosition;
+
+            return "Binary hex dump: " + ProperBitConverter.BytesToHexString(bytes);
+        }
+
         private string ReadStringValue()
         {
             int charSizeFlag = this.Stream.ReadByte();
@@ -1812,7 +1831,7 @@ namespace XamExporter
             {
                 int id = this.ReadIntValue();
                 string name = this.ReadStringValue();
-                type = this.Binder.BindToType(name, this.Context.Config.DebugContext);
+                type = this.Context.Binder.BindToType(name, this.Context.Config.DebugContext);
                 this.types.Add(id, type);
             }
             else if (entryType == BinaryEntryType.TypeID)

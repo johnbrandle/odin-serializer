@@ -8,6 +8,9 @@ namespace XamExporter.Utilities.Editor
     using System;
     using System.Collections.Generic;
     using XamExporter.Utilities;
+    using OdinSerializer.Utilities;
+    using System.Reflection;
+
 #if UNITY_2018_1_OR_NEWER
     using UnityEditor.Build.Reporting;
 #endif
@@ -22,7 +25,16 @@ namespace XamExporter.Utilities.Editor
         static OdinBuildAutomation()
         {
             var odinSerializerDir = new DirectoryInfo(typeof(AssemblyImportSettingsUtilities).Assembly.GetAssemblyDirectory())
-                .Parent.FullName.Replace('\\', '/').TrimEnd('/');
+                .Parent.FullName.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
+
+            var unityDataPath = Environment.CurrentDirectory.Replace("\\", "//").Replace("//", "/").TrimEnd('/');
+
+            if (!odinSerializerDir.StartsWith(unityDataPath))
+            {
+                throw new FileNotFoundException("The referenced Odin Serializer assemblies are not inside the current Unity project - cannot use build automation script!");
+            }
+
+            odinSerializerDir = odinSerializerDir.Substring(unityDataPath.Length).TrimStart('/');
 
             EditorAssemblyPath    = odinSerializerDir + "/EditorOnly/OdinSerializer.dll";
             AOTAssemblyPath       = odinSerializerDir + "/AOT/OdinSerializer.dll";
@@ -34,37 +46,50 @@ namespace XamExporter.Utilities.Editor
             else if (!File.Exists(JITAssemblyPath)) throw new FileNotFoundException("Make sure all release configurations specified in the Visual Studio project are built.", JITAssemblyPath);
         }
 
-        public static void OnPreprocessBuild()
+        private static string GetAssemblyDirectory(this Assembly assembly)
         {
-            var scriptingBackend = AssemblyImportSettingsUtilities.GetCurrentScriptingBackend();
-            var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            var compileForAOT = scriptingBackend == ScriptingImplementation.IL2CPP || !AssemblyImportSettingsUtilities.JITPlatforms.Contains(activeBuildTarget);
-
-            // The EditorOnly dll should aways have the same import settings. But lets just make sure.
-            AssemblyImportSettingsUtilities.SetAssemblyImportSettings(EditorAssemblyPath, OdinAssemblyImportSettings.IncludeInEditorOnly);
-
-            if (compileForAOT)
-            {
-                AssemblyImportSettingsUtilities.SetAssemblyImportSettings(AOTAssemblyPath, OdinAssemblyImportSettings.IncludeInBuildOnly);
-                AssemblyImportSettingsUtilities.SetAssemblyImportSettings(JITAssemblyPath, OdinAssemblyImportSettings.ExcludeFromAll);
-            }
-            else
-            {
-                AssemblyImportSettingsUtilities.SetAssemblyImportSettings(AOTAssemblyPath, OdinAssemblyImportSettings.ExcludeFromAll);
-                AssemblyImportSettingsUtilities.SetAssemblyImportSettings(JITAssemblyPath, OdinAssemblyImportSettings.IncludeInBuildOnly);
-            }
-
-            if (compileForAOT)
-            {
-                // Generates dll that contains all serialized generic type variants needed at runtime.
-                List<Type> types;
-                if (AOTSupportUtilities.ScanProjectForSerializedTypes(out types))
-                {
-                    AOTSupportUtilities.GenerateDLL(GenerateAssembliesDir, "OdinAOTSupport", types);
-                }
-            }
+            string filePath = new Uri(assembly.CodeBase).LocalPath;
+            return Path.GetDirectoryName(filePath);
         }
 
+        public static void OnPreprocessBuild()
+        {
+            BuildTarget platform = EditorUserBuildSettings.activeBuildTarget;
+
+            AssetDatabase.StartAssetEditing();
+
+            try
+            {
+                // The EditorOnly dll should aways have the same import settings. But lets just make sure.
+                AssemblyImportSettingsUtilities.SetAssemblyImportSettings(platform, EditorAssemblyPath, OdinAssemblyImportSettings.IncludeInEditorOnly);
+
+                if (AssemblyImportSettingsUtilities.IsJITSupported(
+                    platform,
+                    AssemblyImportSettingsUtilities.GetCurrentScriptingBackend(),
+                    AssemblyImportSettingsUtilities.GetCurrentApiCompatibilityLevel()))
+                {
+                    AssemblyImportSettingsUtilities.SetAssemblyImportSettings(platform, AOTAssemblyPath, OdinAssemblyImportSettings.ExcludeFromAll);
+                    AssemblyImportSettingsUtilities.SetAssemblyImportSettings(platform, JITAssemblyPath, OdinAssemblyImportSettings.IncludeInBuildOnly);
+                }
+                else
+                {
+                    AssemblyImportSettingsUtilities.SetAssemblyImportSettings(platform, AOTAssemblyPath, OdinAssemblyImportSettings.IncludeInBuildOnly);
+                    AssemblyImportSettingsUtilities.SetAssemblyImportSettings(platform, JITAssemblyPath, OdinAssemblyImportSettings.ExcludeFromAll);
+
+                    // Generates dll that contains all serialized generic type variants needed at runtime.
+                    List<Type> types;
+                    if (AOTSupportUtilities.ScanProjectForSerializedTypes(out types))
+                    {
+                        AOTSupportUtilities.GenerateDLL(GenerateAssembliesDir, "OdinAOTSupport", types);
+                    }
+                }
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+        }
+        
         public static void OnPostprocessBuild()
         {
             // Delete Generated AOT support dll after build so it doesn't pollute the project.

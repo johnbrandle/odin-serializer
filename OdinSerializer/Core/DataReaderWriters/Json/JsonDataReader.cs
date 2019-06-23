@@ -22,6 +22,7 @@ namespace XamExporter
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Text;
 
     /// <summary>
     /// Reads json data from a stream that has been written by a <see cref="JsonDataWriter"/>.
@@ -37,7 +38,7 @@ namespace XamExporter
 
         private readonly Dictionary<Type, Delegate> primitiveArrayReaders;
 
-        public JsonDataReader() : base(null, null)
+        public JsonDataReader() : this(null, null)
         {
         }
 
@@ -194,7 +195,7 @@ namespace XamExporter
                             }
                         }
 
-                        type = this.Binder.BindToType(this.peekedEntryContent.Substring(typeNameStartIndex, this.peekedEntryContent.Length - (1 + typeNameStartIndex)), this.Context.Config.DebugContext);
+                        type = this.Context.Binder.BindToType(this.peekedEntryContent.Substring(typeNameStartIndex, this.peekedEntryContent.Length - (1 + typeNameStartIndex)), this.Context.Config.DebugContext);
 
                         if (typeID >= 0)
                         {
@@ -317,7 +318,7 @@ namespace XamExporter
         /// <summary>
         /// Exits the closest array. This method will keep skipping entries using <see cref="IDataReader.SkipEntry(DeserializationContext)" /> until an <see cref="EntryType.EndOfArray" /> is reached, or the end of the stream is reached.
         /// <para />
-        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)(out Type)" />.
+        /// This call MUST have been preceded by a corresponding call to <see cref="IDataReader.EnterArray(out long)" />.
         /// <para />
         /// This call will change the values of the <see cref="IDataReader.IsInArrayNode" />, <see cref="IDataReader.CurrentNodeName" />, <see cref="IDataReader.CurrentNodeId" /> and <see cref="IDataReader.CurrentNodeDepth" /> to the correct values for the node that was prior to the exited array node.
         /// </summary>
@@ -532,10 +533,18 @@ namespace XamExporter
         {
             this.PeekEntry();
 
-            if (this.peekedEntryType == EntryType.ExternalReferenceByGuid && (guid = new Guid(this.peekedEntryContent)) != Guid.Empty)
+            if (this.peekedEntryType == EntryType.ExternalReferenceByGuid)
             {
+                var guidStr = this.peekedEntryContent;
+
+                if (guidStr.StartsWith(JsonConfig.EXTERNAL_GUID_REF_SIG))
+                {
+                    guidStr = guidStr.Substring(JsonConfig.EXTERNAL_GUID_REF_SIG.Length + 1);
+                }
+
                 try
                 {
+                    guid = new Guid(guidStr);
                     return true;
                 }
                 catch (FormatException)
@@ -577,6 +586,12 @@ namespace XamExporter
             if (this.peekedEntryType == EntryType.ExternalReferenceByString)
             {
                 id = this.peekedEntryContent;
+
+                if (id.StartsWith(JsonConfig.EXTERNAL_STRING_REF_SIG))
+                {
+                    id = id.Substring(JsonConfig.EXTERNAL_STRING_REF_SIG.Length + 1);
+                }
+
                 this.MarkEntryConsumed();
                 return true;
             }
@@ -1165,6 +1180,25 @@ namespace XamExporter
             this.peekedEntryName = null;
             this.seenTypes.Clear();
             this.reader.Reset();
+        }
+
+        public override string GetDataDump()
+        {
+            if (!this.Stream.CanSeek)
+            {
+                return "Json data stream cannot seek; cannot dump data.";
+            }
+
+            var oldPosition = this.Stream.Position;
+
+            var bytes = new byte[this.Stream.Length];
+
+            this.Stream.Position = 0;
+            this.Stream.Read(bytes, 0, bytes.Length);
+
+            this.Stream.Position = oldPosition;
+
+            return "Json: " + Encoding.UTF8.GetString(bytes, 0, bytes.Length);
         }
 
         /// <summary>

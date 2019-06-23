@@ -120,6 +120,12 @@ namespace XamExporter.Utilities
             "void",
             "volatile",
             "while",
+            "in",
+            "get",
+            "set",
+            "var",
+            //"async", // Identifiers can be named async and await
+            //"await",
         };
 
         /// <summary>
@@ -467,24 +473,20 @@ namespace XamExporter.Utilities
         /// <param name="requireImplicitCast">if set to <c>true</c> an implicit or explicit operator must be defined on the given type.</param>
         public static MethodInfo GetCastMethod(this Type from, Type to, bool requireImplicitCast = false)
         {
-            var fromMethods = from.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+            var fromMethods = from.GetAllMembers<MethodInfo>(BindingFlags.Public | BindingFlags.Static);
 
-            for (int i = 0; i < fromMethods.Length; i++)
+            foreach (var method in fromMethods)
             {
-                MethodInfo method = fromMethods[i];
-
                 if ((method.Name == "op_Implicit" || (requireImplicitCast == false && method.Name == "op_Explicit")) && to.IsAssignableFrom(method.ReturnType))
                 {
                     return method;
                 }
             }
 
-            var toMethods = to.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            var toMethods = to.GetAllMembers<MethodInfo>(BindingFlags.Public | BindingFlags.Static);
 
-            for (int i = 0; i < toMethods.Length; i++)
+            foreach (var method in toMethods)
             {
-                MethodInfo method = toMethods[i];
-
                 if ((method.Name == "op_Implicit" || (requireImplicitCast == false && method.Name == "op_Explicit")) && method.GetParameters()[0].ParameterType.IsAssignableFrom(from))
                 {
                     return method;
@@ -874,7 +876,6 @@ namespace XamExporter.Utilities
 
             switch (op)
             {
-                // TODO: Add Divide and other names for other .Net versions
                 case Operator.Equality:
                     methodName = "op_Equality";
                     break;
@@ -889,6 +890,14 @@ namespace XamExporter.Utilities
 
                 case Operator.Subtraction:
                     methodName = "op_Subtraction";
+                    break;
+
+                case Operator.Multiply:
+                    methodName = "op_Multiply";
+                    break;
+
+                case Operator.Division:
+                    methodName = "op_Division";
                     break;
 
                 case Operator.LessThan:
@@ -907,11 +916,47 @@ namespace XamExporter.Utilities
                     methodName = "op_GreaterThanOrEqual";
                     break;
 
+                case Operator.Modulus:
+                    methodName = "op_Modulus";
+                    break;
+
+                case Operator.RightShift:
+                    methodName = "op_RightShift";
+                    break;
+
+                case Operator.LeftShift:
+                    methodName = "op_LeftShift";
+                    break;
+                    
+                case Operator.BitwiseAnd:
+                    methodName = "op_BitwiseAnd";
+                    break;
+
+                case Operator.BitwiseOr:
+                    methodName = "op_BitwiseOr";
+                    break;
+
+                case Operator.ExclusiveOr:
+                    methodName = "op_ExclusiveOr";
+                    break;
+
+                case Operator.BitwiseComplement:
+                    methodName = "op_OnesComplement";
+                    break;
+
+                case Operator.LogicalNot:
+                    methodName = "op_LogicalNot";
+                    break;
+
+                case Operator.LogicalAnd:
+                case Operator.LogicalOr:
+                    return null; // Not overridable
+
                 default:
                     throw new NotImplementedException();
             }
 
-            return type.GetMethod(methodName, Flags.StaticAnyVisibility);
+            return type.GetAllMembers<MethodInfo>(Flags.StaticAnyVisibility).FirstOrDefault(m => m.Name == methodName);
         }
 
         /// <summary>
@@ -940,6 +985,14 @@ namespace XamExporter.Utilities
                     methodName = "op_Subtraction";
                     break;
 
+                case Operator.Multiply:
+                    methodName = "op_Multiply";
+                    break;
+
+                case Operator.Division:
+                    methodName = "op_Division";
+                    break;
+
                 case Operator.LessThan:
                     methodName = "op_LessThan";
                     break;
@@ -956,11 +1009,47 @@ namespace XamExporter.Utilities
                     methodName = "op_GreaterThanOrEqual";
                     break;
 
+                case Operator.Modulus:
+                    methodName = "op_Modulus";
+                    break;
+
+                case Operator.RightShift:
+                    methodName = "op_RightShift";
+                    break;
+
+                case Operator.LeftShift:
+                    methodName = "op_LeftShift";
+                    break;
+
+                case Operator.BitwiseAnd:
+                    methodName = "op_BitwiseAnd";
+                    break;
+
+                case Operator.BitwiseOr:
+                    methodName = "op_BitwiseOr";
+                    break;
+
+                case Operator.ExclusiveOr:
+                    methodName = "op_ExclusiveOr";
+                    break;
+
+                case Operator.BitwiseComplement:
+                    methodName = "op_OnesComplement";
+                    break;
+
+                case Operator.LogicalNot:
+                    methodName = "op_LogicalNot";
+                    break;
+
+                case Operator.LogicalAnd:
+                case Operator.LogicalOr:
+                    return null; // Not overridable
+
                 default:
                     throw new NotImplementedException();
             }
-
-            return type.GetMethods(Flags.StaticAnyVisibility).Where(x => x.Name == methodName).ToArray();
+            
+            return type.GetAllMembers<MethodInfo>(Flags.StaticAnyVisibility).Where(x => x.Name == methodName).ToArray();
         }
 
         /// <summary>
@@ -990,7 +1079,7 @@ namespace XamExporter.Utilities
 
                     currentType = currentType.BaseType;
                 }
-                while (currentType != typeof(object) && currentType != null);
+                while (currentType != null);
             }
         }
 
@@ -1046,7 +1135,7 @@ namespace XamExporter.Utilities
 
                     currentType = currentType.BaseType;
                 }
-                while (currentType != typeof(object) && currentType != null);
+                while (currentType != null);
             }
         }
 
@@ -1636,7 +1725,6 @@ namespace XamExporter.Utilities
                 return false;
             }
         }
-
         /// <summary>
         /// <para>Checks whether an array of types satisfy the constraints of a given generic type definition.</para>
         /// <para>If this method returns true, the given parameters can be safely used with <see cref="Type.MakeGenericType(Type[])"/> with the given generic type definition.</para>
@@ -1644,21 +1732,21 @@ namespace XamExporter.Utilities
         /// <param name="genericType">The generic type definition to check.</param>
         /// <param name="parameters">The parameters to check validity for.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// genericTypeDefinition is null
+        /// genericType is null
         /// or
         /// types is null
         /// </exception>
-        /// <exception cref="System.ArgumentException">The genericTypeDefinition parameter must be a generic type definition.</exception>
+        /// <exception cref="System.ArgumentException">The genericType parameter must be a generic type definition.</exception>
         public static bool AreGenericConstraintsSatisfiedBy(this Type genericType, params Type[] parameters)
         {
             if (genericType == null)
             {
-                throw new ArgumentNullException("genericTypeDefinition");
+                throw new ArgumentNullException("genericType");
             }
 
             if (parameters == null)
             {
-                throw new ArgumentNullException("types");
+                throw new ArgumentNullException("parameters");
             }
 
             if (!genericType.IsGenericType)
@@ -1666,8 +1754,43 @@ namespace XamExporter.Utilities
                 throw new ArgumentException("The genericTypeDefinition parameter must be a generic type.");
             }
 
-            Type[] definitions = genericType.GetGenericArguments();
+            return AreGenericConstraintsSatisfiedBy(genericType.GetGenericArguments(), parameters);
+        }
 
+        /// <summary>
+        /// <para>Checks whether an array of types satisfy the constraints of a given generic method definition.</para>
+        /// <para>If this method returns true, the given parameters can be safely used with <see cref="MethodInfo.MakeGenericMethod(Type[])"/> with the given generic method definition.</para>
+        /// </summary>
+        /// <param name="genericType">The generic method definition to check.</param>
+        /// <param name="parameters">The parameters to check validity for.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// genericType is null
+        /// or
+        /// types is null
+        /// </exception>
+        /// <exception cref="System.ArgumentException">The genericMethod parameter must be a generic method definition.</exception>
+        public static bool AreGenericConstraintsSatisfiedBy(this MethodBase genericMethod, params Type[] parameters)
+        {
+            if (genericMethod == null)
+            {
+                throw new ArgumentNullException("genericMethod");
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("parameters");
+            }
+
+            if (!genericMethod.IsGenericMethod)
+            {
+                throw new ArgumentException("The genericMethod parameter must be a generic method.");
+            }
+
+            return AreGenericConstraintsSatisfiedBy(genericMethod.GetGenericArguments(), parameters);
+        }
+
+        public static bool AreGenericConstraintsSatisfiedBy(Type[] definitions, Type[] parameters)
+        {
             if (definitions.Length != parameters.Length)
             {
                 return false;

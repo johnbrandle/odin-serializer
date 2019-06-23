@@ -75,8 +75,8 @@ namespace XamExporter
                     try
                     {
                         writer.BeginStructNode(null, null);
-                        PrimaryReaderWriter.WriteValue(pair.Key, writer);
-                        InnerReaderWriter.WriteValue(pair.Value, writer);
+                        PrimaryReaderWriter.WriteValue("$k", pair.Key, writer);
+                        InnerReaderWriter.WriteValue("$v", pair.Value, writer);
                     }
                     catch (SerializationAbortException ex)
                     {
@@ -160,7 +160,7 @@ namespace XamExporter
 
                         if (reader.IsInArrayNode == false)
                         {
-                            reader.Context.Config.DebugContext.LogError("Reading array went wrong at position " + reader.Stream.Position + ".");
+                            reader.Context.Config.DebugContext.LogError("Reading array went wrong. Data dump: " + reader.GetDataDump());
                             break;
                         }
                     }

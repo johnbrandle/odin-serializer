@@ -18,7 +18,7 @@
 namespace XamExporter.Utilities
 {
     /// <summary>
-    /// Determents the type of operator.
+    /// Determines the type of operator.
     /// </summary>
     /// <seealso cref="TypeExtensions" />
     public enum Operator
@@ -44,6 +44,16 @@ namespace XamExporter.Utilities
         Subtraction,
 
         /// <summary>
+        /// The * operator.
+        /// </summary>
+        Multiply,
+
+        /// <summary>
+        /// The / operator.
+        /// </summary>
+        Division,
+
+        /// <summary>
         /// The &lt; operator.
         /// </summary>
         LessThan,
@@ -61,6 +71,56 @@ namespace XamExporter.Utilities
         /// <summary>
         /// The &gt;= operator.
         /// </summary>
-        GreaterThanOrEqual
+        GreaterThanOrEqual,
+
+        /// <summary>
+        /// The % operator.
+        /// </summary>
+        Modulus,
+
+        /// <summary>
+        /// The &gt;&gt; operator.
+        /// </summary>
+        RightShift,
+
+        /// <summary>
+        /// The &lt;&lt; operator.
+        /// </summary>
+        LeftShift,
+
+        /// <summary>
+        /// The &amp; operator.
+        /// </summary>
+        BitwiseAnd,
+
+        /// <summary>
+        /// The | operator.
+        /// </summary>
+        BitwiseOr,
+
+        /// <summary>
+        /// The ^ operator.
+        /// </summary>
+        ExclusiveOr,
+
+        /// <summary>
+        /// The ~ operator.
+        /// </summary>
+        BitwiseComplement,
+
+        /// <summary>
+        /// The &amp;&amp; operator.
+        /// </summary>
+        LogicalAnd,
+
+        /// <summary>
+        /// The || operator.
+        /// </summary>
+        LogicalOr,
+
+        /// <summary>
+        /// The ! operator.
+        /// </summary>
+        LogicalNot,
     }
 }

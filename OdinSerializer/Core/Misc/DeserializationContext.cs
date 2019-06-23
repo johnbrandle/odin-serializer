@@ -33,6 +33,7 @@ namespace XamExporter
         private Dictionary<int, object> internalIdReferenceMap = new Dictionary<int, object>(128);
         private StreamingContext streamingContext;
         private IFormatterConverter formatterConverter;
+        private TwoWaySerializationBinder binder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeserializationContext"/> class.
@@ -77,6 +78,30 @@ namespace XamExporter
             this.formatterConverter = formatterConverter;
 
             this.Reset();
+        }
+
+        /// <summary>
+        /// Gets or sets the context's type binder.
+        /// </summary>
+        /// <value>
+        /// The context's serialization binder.
+        /// </value>
+        public TwoWaySerializationBinder Binder
+        {
+            get
+            {
+                if (this.binder == null)
+                {
+                    this.binder = DefaultSerializationBinder.Default;
+                }
+
+                return this.binder;
+            }
+
+            set
+            {
+                this.binder = value;
+            }
         }
 
         /// <summary>
@@ -264,6 +289,7 @@ namespace XamExporter
             this.IndexReferenceResolver = null;
             this.GuidReferenceResolver = null;
             this.StringReferenceResolver = null;
+            this.binder = null;
         }
 
         void ICacheNotificationReceiver.OnFreed()

@@ -78,19 +78,15 @@
       <HintPath>..\Libraries\Unity\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>..\Libraries\Unity\UnityEngine.Networking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\Libraries\Unity\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Formatters\MethodInfoFormatter.cs" />
     <Compile Include="Core\Formatters\QueueFormatter.cs" />
+    <Compile Include="Core\Formatters\ReflectionOrEmittedBaseFormatter.cs" />
     <Compile Include="Core\Formatters\StackFormatter.cs" />
     <Compile Include="Unity Integration\AOTSupportScanner.cs" />
+    <Compile Include="Unity Integration\OdinPrefabSerializationEditorUtility.cs" />
+    <Compile Include="Unity Integration\SerializedUnityObjects\IOverridesSerializationPolicy.cs" />
     <Compile Include="Utilities\Misc\AssemblyImportSettingsUtilities.cs" />
     <Compile Include="Core\FormatterLocators\ArrayFormatterLocator.cs" />
     <Compile Include="Core\FormatterLocators\DelegateFormatterLocator.cs" />
@@ -114,8 +110,6 @@
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
     <Compile Include="Utilities\Extensions\UnityExtensions.cs" />
-    <Compile Include="Utilities\Misc\AssemblyTypeFlags.cs" />
-    <Compile Include="Utilities\Misc\AssemblyUtilities.cs" />
     <Compile Include="Utilities\Misc\Cache.cs" />
     <Compile Include="Utilities\Misc\DoubleLookupDictionary.cs" />
     <Compile Include="Utilities\Misc\EmitUtilities.cs" />
@@ -246,7 +240,6 @@
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedBehaviour.cs" />
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedComponent.cs" />
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedMonoBehaviour.cs" />
-    <Compile Include="Unity Integration\SerializedUnityObjects\SerializedNetworkBehaviour.cs" />
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedScriptableObject.cs" />
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedStateMachineBehaviour.cs" />
     <Compile Include="Unity Integration\SerializedUnityObjects\SerializedUnityObject.cs" />

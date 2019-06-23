@@ -28,7 +28,7 @@ namespace XamExporter
     /// <seealso cref="ICacheNotificationReceiver" />
     public sealed class UnityReferenceResolver : IExternalIndexReferenceResolver, ICacheNotificationReceiver
     {
-        private Dictionary<UnityEngine.Object, int> referenceIndexMapping = new Dictionary<UnityEngine.Object, int>(32);
+        private Dictionary<UnityEngine.Object, int> referenceIndexMapping = new Dictionary<UnityEngine.Object, int>(32, ReferenceEqualityComparer<UnityEngine.Object>.Default);
         private List<UnityEngine.Object> referencedUnityObjects;
 
         /// <summary>
@@ -128,8 +128,11 @@ namespace XamExporter
         {
             if (this.referencedUnityObjects == null || index < 0 || index >= this.referencedUnityObjects.Count)
             {
+                // Sometimes something has destroyed the list of references in between serialization and deserialization
+                // (Unity prefab instances are especially bad at preserving such data), and in these cases we still don't
+                // want the system to fall back to a formatter, so we give out a null value.
                 value = null;
-                return false;
+                return true;
             }
 
             value = this.referencedUnityObjects[index];

@@ -88,11 +88,11 @@ The performance graphs in this section are profiled with OdinSerializer's binary
 
 ## How to get started
 
-There are many different use cases for OdinSerializer. If you just need a serialiation library to use in your own private project, we can recommend that you simply use it out of the box. If you would like to make your own tweaks and builds, or if you intend to include OdinSerializer in a package that you are distributing, you would be better served by forking the repository.
+There are many different use cases for OdinSerializer. If you just need a serialization library to use in your own private project, we can recommend that you simply use it out of the box. If you would like to make your own tweaks and builds, or if you intend to include OdinSerializer in a package that you are distributing, you would be better served by forking the repository.
 
 ### Using OdinSerializer out of the box
 
-To use OdinSerializer as-is, simply click the download button at the top of this readme to download the latest release, and import the contained .unitypackage file into your Unity project. OdinSerializer will then be in your project, ready to use.
+To use OdinSerializer as-is, simply head to the [releases](https://github.com/TeamSirenix/odin-serializer/releases) page to download the latest release .unitypackage file, and import the package into your Unity project. OdinSerializer will then be in your project, ready to use.
 
 ### Forking OdinSerializer
 
@@ -102,7 +102,14 @@ To get started, you may want to read [GitHub's guide to forking](https://guides.
 
 Once you've forked OdinSerializer, you can start making your own changes to the project. Perhaps you want to add a feature, or tweak a part of it to suit your own needs better.
 
-If you intend to include OdinSerializer in one of your own product distributions, you should modify all source files using a tool like search and replace to move the OdinSerializer namespace into an appropriate namespace for your project. This is to avoid namespace conflicts in the cases where multiple different assets in the same project all use possibly differing versions of OdinSerializer. For example, you might globally rename "OdinSerializer" to "MyProject.Internal.OdinSerializer".
+If you intend to include OdinSerializer in one of your own product distributions, you should modify all source files using a tool like search and replace to move the OdinSerializer namespace into an appropriate namespace for your project, and rename the .dll's that are built. This is to avoid namespace and assembly conflicts in the cases where multiple different assets in the same project all use possibly differing versions of OdinSerializer. For example, you might globally rename "OdinSerializer" to "MyProject.Internal.OdinSerializer", and also have the .dll's renamed to "MyProject.Internal.OdinSerializer.dll".
+
+Here's a goto list of things that need to be renamed during this process:
+
+- OdinSerializer.csproj: AssemblyName and RootNamespace and XML doc path.
+- OdinBuildAutomation.cs: Namespace, and assembly name strings in the static constructor.
+- Namespaces in the entire OdinSerializer project (search and replace is your friend).
+- The link.xml file included in the AOT folder.
 
 ### Building OdinSerializer
 
@@ -158,7 +165,7 @@ public static class Example
 {
 	public static void Save(MyData data,  string filePath, ref List<UnityEngine.Object> unityReferences)
 	{
-		byte[] bytes = SerializationUtility.SerializeValue(data, DataFormat.Binary, ref unityReferences);
+		byte[] bytes = SerializationUtility.SerializeValue(data, DataFormat.Binary, out unityReferences);
 		File.WriteAllBytes(bytes, filePath);
 		
 		// The unityReferences list will now be filled with all encountered UnityEngine.Object references, and the saved binary data contains index pointers into this list.
